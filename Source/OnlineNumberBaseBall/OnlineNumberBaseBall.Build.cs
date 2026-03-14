@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// OnlineNumberBaseBall.Build.cs
 
 using UnrealBuildTool;
 
@@ -8,9 +8,21 @@ public class OnlineNumberBaseBall : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" });
+		PublicDependencyModuleNames.AddRange(new string[]
+		{
+			// Initial Dependencies
+			"Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput",
+			
+			// UI
+			"UMG", "Slate", "SlateCore",
+		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
+		
+		PublicIncludePaths.AddRange(new string[]
+		{
+			"OnlineNumberBaseBall",
+		});
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
