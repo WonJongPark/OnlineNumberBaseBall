@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// OnlineNumberBaseBall.cpp
 
 #include "OnlineNumberBaseBall.h"
 #include "Modules/ModuleManager.h"

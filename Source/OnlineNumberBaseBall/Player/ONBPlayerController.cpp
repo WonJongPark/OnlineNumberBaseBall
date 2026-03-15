@@ -3,11 +3,17 @@
 
 #include "ONBPlayerController.h"
 
+#include "OnlineNumberBaseBall.h"
 #include "UI/ONBChatInput.h"
 
 void AONBPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	if (IsLocalController())
+	{
+		return;
+	}
 	
 	FInputModeUIOnly InputModeUIOnly;
 	SetInputMode(InputModeUIOnly);
@@ -31,5 +37,7 @@ void AONBPlayerController::SetChatMessageString(const FString& IntChatMessageStr
 
 void AONBPlayerController::PrintChatMessageString(const FString& InChatMessageString)
 {
-	if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, *ChatMessageString);
+	FString NetModeString = ONBFunctionLibrary::GetNetModeString(this);
+	FString CombineMessageString = FString::Printf(TEXT("%s: %s"), *NetModeString, *InChatMessageString);
+	ONBFunctionLibrary::MyPrintString(this, CombineMessageString, 10.0f);
 }
