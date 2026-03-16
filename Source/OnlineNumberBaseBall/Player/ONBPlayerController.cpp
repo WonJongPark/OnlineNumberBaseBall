@@ -3,8 +3,9 @@
 
 #include "ONBPlayerController.h"
 
-#include "EngineUtils.h"
 #include "OnlineNumberBaseBall.h"
+#include "Game/ONBGameModeBase.h"
+#include "Kismet/GameplayStatics.h"
 #include "UI/ONBChatInput.h"
 
 void AONBPlayerController::BeginPlay()
@@ -53,12 +54,13 @@ void AONBPlayerController::ClientRPCPrintChatMessageString_Implementation(const 
 
 void AONBPlayerController::ServerRPCPrintChatMessageString_Implementation(const FString& InChatMessageString)
 {
-	for (TActorIterator<AONBPlayerController> It(GetWorld()); It; ++It)
+	AGameModeBase* GM = UGameplayStatics::GetGameMode(this);
+	if (IsValid(GM))
 	{
-		AONBPlayerController* OnbPlayerController = *It;
-		if (IsValid(OnbPlayerController))
+		AONBGameModeBase* ONBGM = Cast<AONBGameModeBase>(GM);
+		if (IsValid(ONBGM))
 		{
-			OnbPlayerController->ClientRPCPrintChatMessageString(InChatMessageString);
+			ONBGM->PrintChatMessageString(this, InChatMessageString);
 		}
 	}
 }
