@@ -10,7 +10,7 @@ void AONBPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (IsLocalController())
+	if (!IsLocalController())
 	{
 		return;
 	}
