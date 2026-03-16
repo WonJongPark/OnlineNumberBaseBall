@@ -3,6 +3,7 @@
 
 #include "ONBPlayerController.h"
 
+#include "EngineUtils.h"
 #include "OnlineNumberBaseBall.h"
 #include "UI/ONBChatInput.h"
 
@@ -32,7 +33,10 @@ void AONBPlayerController::SetChatMessageString(const FString& IntChatMessageStr
 {
 	ChatMessageString = IntChatMessageString;
 	
-	PrintChatMessageString(ChatMessageString);
+	if (IsLocalController())
+	{
+		ServerRPCPrintChatMessageString(IntChatMessageString);
+	}
 }
 
 void AONBPlayerController::PrintChatMessageString(const FString& InChatMessageString)
@@ -40,4 +44,21 @@ void AONBPlayerController::PrintChatMessageString(const FString& InChatMessageSt
 	FString NetModeString = ONBFunctionLibrary::GetNetModeString(this);
 	FString CombineMessageString = FString::Printf(TEXT("%s: %s"), *NetModeString, *InChatMessageString);
 	ONBFunctionLibrary::MyPrintString(this, CombineMessageString, 10.0f);
+}
+
+void AONBPlayerController::ClientRPCPrintChatMessageString_Implementation(const FString& InChatMessageString)
+{
+	PrintChatMessageString(InChatMessageString);
+}
+
+void AONBPlayerController::ServerRPCPrintChatMessageString_Implementation(const FString& InChatMessageString)
+{
+	for (TActorIterator<AONBPlayerController> It(GetWorld()); It; ++It)
+	{
+		AONBPlayerController* OnbPlayerController = *It;
+		if (IsValid(OnbPlayerController))
+		{
+			OnbPlayerController->ClientRPCPrintChatMessageString(InChatMessageString);
+		}
+	}
 }
