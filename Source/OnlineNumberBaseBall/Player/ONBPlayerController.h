@@ -19,7 +19,7 @@ class ONLINENUMBERBASEBALL_API AONBPlayerController : public APlayerController
 public:
 	virtual void BeginPlay() override;
 	
-	void SetChatMessageString(const FString& IntChatMessageString);
+	void SetChatMessageString(const FString& InChatMessageString);
 	
 	void PrintChatMessageString(const FString& InChatMessageString);
 	

@@ -3,6 +3,7 @@
 
 #include "ONBPlayerController.h"
 
+#include "ONBPlayerState.h"
 #include "OnlineNumberBaseBall.h"
 #include "Game/ONBGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
@@ -30,13 +31,19 @@ void AONBPlayerController::BeginPlay()
 	}
 }
 
-void AONBPlayerController::SetChatMessageString(const FString& IntChatMessageString)
+void AONBPlayerController::SetChatMessageString(const FString& InChatMessageString)
 {
-	ChatMessageString = IntChatMessageString;
+	ChatMessageString = InChatMessageString;
 	
 	if (IsLocalController())
 	{
-		ServerRPCPrintChatMessageString(IntChatMessageString);
+		AONBPlayerState* ONBPS = GetPlayerState<AONBPlayerState>();
+		if (IsValid(ONBPS))
+		{
+			FString CombinedMessageString = ONBPS->PlayerNameString + TEXT(": ") + InChatMessageString;
+			
+			ServerRPCPrintChatMessageString(CombinedMessageString);
+		}
 	}
 }
 

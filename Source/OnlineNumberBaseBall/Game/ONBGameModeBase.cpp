@@ -6,21 +6,28 @@
 #include "EngineUtils.h"
 #include "ONBGameStateBase.h"
 #include "Player/ONBPlayerController.h"
+#include "Player/ONBPlayerState.h"
 
 void AONBGameModeBase::OnPostLogin(AController* NewPlayer)
 {
 	Super::OnPostLogin(NewPlayer);
 	
-	AONBGameStateBase* ONBGameSateBase = GetGameState<AONBGameStateBase>();
-	if (IsValid(ONBGameSateBase))
-	{
-		ONBGameSateBase->MulticastRPCBroadcastLoginMessage(TEXT("XXXXXXX"));
-	}
-	
 	AONBPlayerController* ONBPlayerController = Cast<AONBPlayerController>(NewPlayer);
 	if (IsValid(ONBPlayerController))
 	{
 		AllPlayerControllers.Add(ONBPlayerController);
+		
+		AONBPlayerState* ONBPS = ONBPlayerController->GetPlayerState<AONBPlayerState>();
+		if (IsValid(ONBPS))
+		{
+			ONBPS->PlayerNameString = TEXT("Player") + FString::FromInt(AllPlayerControllers.Num());
+		}
+		
+		AONBGameStateBase* ONBGameStateBase = GetGameState<AONBGameStateBase>();
+		if (IsValid(ONBGameStateBase))
+		{
+			ONBGameStateBase->MulticastRPCBroadcastLoginMessage(ONBPS->PlayerNameString);
+		}
 	}
 }
 
