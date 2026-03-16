@@ -13,4 +13,8 @@ UCLASS()
 class ONLINENUMBERBASEBALL_API AONBGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+	
+public:
+	virtual void OnPostLogin(AController* NewPlayer) override;
+	
 };
