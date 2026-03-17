@@ -52,21 +52,21 @@ void AONBPlayerController::SetChatMessageString(const FString& InChatMessageStri
 	
 	if (IsLocalController())
 	{
-		AONBPlayerState* ONBPS = GetPlayerState<AONBPlayerState>();
+		
+		ServerRPCPrintChatMessageString(InChatMessageString);
+		/*AONBPlayerState* ONBPS = GetPlayerState<AONBPlayerState>();
 		if (IsValid(ONBPS))
 		{
 			FString CombinedMessageString = ONBPS->GetPlayerInfoString() + TEXT(": ") + InChatMessageString;
 			
-			ServerRPCPrintChatMessageString(CombinedMessageString);
-		}
+			
+		}*/
 	}
 }
 
 void AONBPlayerController::PrintChatMessageString(const FString& InChatMessageString)
 {
-	FString NetModeString = ONBFunctionLibrary::GetNetModeString(this);
-	FString CombineMessageString = FString::Printf(TEXT("%s: %s"), *NetModeString, *InChatMessageString);
-	ONBFunctionLibrary::MyPrintString(this, CombineMessageString, 10.0f);
+	ONBFunctionLibrary::MyPrintString(this, InChatMessageString, 10.0f);
 }
 
 void AONBPlayerController::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const

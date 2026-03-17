@@ -23,13 +23,17 @@ public:
 	
 	FString GenerateSecretNumber();
 	
-	bool IsGuessNumberString(const FString& InNumberString);
+	bool IsGuessNumberString(const FString& InNumberString, FString& OutWarningString);
 	
 	FString JudgeResult(const FString& InSecretNumberString, const FString& InGuessNumberString);
 	
 	void PrintChatMessageString(AONBPlayerController* InChattingPlayerController, const FString& InChatMessageString);
 	
 	void IncreaseGuessCount(AONBPlayerController* InChattingPlayerController);
+	
+	void RestGame();
+	
+	void JudgeGame(AONBPlayerController* InChattingPlayerController, int32 InStrikeCount);
 	
 protected:
 	FString SecretNumberString;
