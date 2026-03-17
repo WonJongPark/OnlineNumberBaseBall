@@ -7,7 +7,13 @@
 #include "OnlineNumberBaseBall.h"
 #include "Game/ONBGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "Net/UnrealNetwork.h"
 #include "UI/ONBChatInput.h"
+
+AONBPlayerController::AONBPlayerController()
+{
+	bReplicates = true;
+}
 
 void AONBPlayerController::BeginPlay()
 {
@@ -27,6 +33,15 @@ void AONBPlayerController::BeginPlay()
 		if (IsValid(ChatInputWidgetInstance))
 		{
 			ChatInputWidgetInstance->AddToViewport();
+		}
+	}
+	
+	if (IsValid(NotificationTextWidgetClass))
+	{
+		NotificationTextWidgetInstance = CreateWidget<UUserWidget>(this, NotificationTextWidgetClass);
+		if (IsValid(NotificationTextWidgetInstance))
+		{
+			NotificationTextWidgetInstance->AddToViewport();
 		}
 	}
 }
@@ -52,6 +67,13 @@ void AONBPlayerController::PrintChatMessageString(const FString& InChatMessageSt
 	FString NetModeString = ONBFunctionLibrary::GetNetModeString(this);
 	FString CombineMessageString = FString::Printf(TEXT("%s: %s"), *NetModeString, *InChatMessageString);
 	ONBFunctionLibrary::MyPrintString(this, CombineMessageString, 10.0f);
+}
+
+void AONBPlayerController::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	DOREPLIFETIME(ThisClass, NotificationText);
 }
 
 void AONBPlayerController::ClientRPCPrintChatMessageString_Implementation(const FString& InChatMessageString)

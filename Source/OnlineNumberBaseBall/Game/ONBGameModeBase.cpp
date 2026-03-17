@@ -15,6 +15,8 @@ void AONBGameModeBase::OnPostLogin(AController* NewPlayer)
 	AONBPlayerController* ONBPlayerController = Cast<AONBPlayerController>(NewPlayer);
 	if (IsValid(ONBPlayerController))
 	{
+		ONBPlayerController->NotificationText = FText::FromString(TEXT("Connected to the game server."));
+		
 		AllPlayerControllers.Add(ONBPlayerController);
 		
 		AONBPlayerState* ONBPS = ONBPlayerController->GetPlayerState<AONBPlayerState>();
