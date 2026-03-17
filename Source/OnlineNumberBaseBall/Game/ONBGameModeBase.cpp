@@ -47,7 +47,7 @@ FString AONBGameModeBase::GenerateSecretNumber()
 	}
 	
 	FMath::RandInit(FDateTime::Now().GetTicks());
-	Numbers = Numbers.FilterByPredicate([](int32 Num) { return Num > 0; });
+	// Numbers = Numbers.FilterByPredicate([](int32 Num) { return Num > 0; });
 	
 	FString Result;
 	for (int32 i = 0; i < 3; ++i)
@@ -133,6 +133,9 @@ void AONBGameModeBase::PrintChatMessageString(AONBPlayerController* InChattingPl
 	if (IsGuessNumberString(GuessNumberString))
 	{
 		FString JudgeResultString = JudgeResult(SecretNumberString, GuessNumberString);
+		
+		IncreaseGuessCount(InChattingPlayerController);
+		
 		for (TActorIterator<AONBPlayerController> It(GetWorld()); It; ++It)
 		{
 			AONBPlayerController* ONBPlayerController = *It;
@@ -153,5 +156,14 @@ void AONBGameModeBase::PrintChatMessageString(AONBPlayerController* InChattingPl
 				ONBPlayerController->ClientRPCPrintChatMessageString(InChatMessageString);
 			}
 		}
+	}
+}
+
+void AONBGameModeBase::IncreaseGuessCount(AONBPlayerController* InChattingPlayerController)
+{
+	AONBPlayerState* ONBPS = InChattingPlayerController->GetPlayerState<AONBPlayerState>();
+	if (IsValid(ONBPS))
+	{
+		ONBPS->CurrentGuessCount++;
 	}
 }

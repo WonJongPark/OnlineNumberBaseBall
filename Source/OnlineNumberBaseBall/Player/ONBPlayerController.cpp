@@ -40,7 +40,7 @@ void AONBPlayerController::SetChatMessageString(const FString& InChatMessageStri
 		AONBPlayerState* ONBPS = GetPlayerState<AONBPlayerState>();
 		if (IsValid(ONBPS))
 		{
-			FString CombinedMessageString = ONBPS->PlayerNameString + TEXT(": ") + InChatMessageString;
+			FString CombinedMessageString = ONBPS->GetPlayerInfoString() + TEXT(": ") + InChatMessageString;
 			
 			ServerRPCPrintChatMessageString(CombinedMessageString);
 		}
