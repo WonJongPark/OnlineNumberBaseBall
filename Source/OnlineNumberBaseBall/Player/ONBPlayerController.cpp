@@ -3,8 +3,6 @@
 
 #include "ONBPlayerController.h"
 
-#include "ONBPlayerState.h"
-#include "OnlineNumberBaseBall.h"
 #include "Game/ONBGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
@@ -54,19 +52,17 @@ void AONBPlayerController::SetChatMessageString(const FString& InChatMessageStri
 	{
 		
 		ServerRPCPrintChatMessageString(InChatMessageString);
-		/*AONBPlayerState* ONBPS = GetPlayerState<AONBPlayerState>();
-		if (IsValid(ONBPS))
-		{
-			FString CombinedMessageString = ONBPS->GetPlayerInfoString() + TEXT(": ") + InChatMessageString;
-			
-			
-		}*/
 	}
 }
 
 void AONBPlayerController::PrintChatMessageString(const FString& InChatMessageString)
 {
-	ONBFunctionLibrary::MyPrintString(this, InChatMessageString, 10.0f);
+	//ONBFunctionLibrary::MyPrintString(this, InChatMessageString, 10.0f);
+	
+	if (IsValid(ChatInputWidgetInstance))
+	{
+		ChatInputWidgetInstance->AddChatMessage(InChatMessageString);
+	}
 }
 
 void AONBPlayerController::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
